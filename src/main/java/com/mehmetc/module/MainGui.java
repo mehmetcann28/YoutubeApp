@@ -4,6 +4,7 @@ import com.mehmetc.controller.CommentController;
 import com.mehmetc.controller.VideoController;
 import com.mehmetc.dto.response.CommentResponseDTO;
 import com.mehmetc.dto.response.VideoResponseDTO;
+import com.mehmetc.entity.User;
 
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ public class MainGui {
 	private final VideoController videoController = VideoController.getInstance();
 	private final CommentController commentController = CommentController.getInstance();
 	private final UserGui userGui = UserGui.getInstance();
+	private User user;
 	
 	
 	public MainGui() {
@@ -28,14 +30,23 @@ public class MainGui {
 	}
 	
 	public void mainGui(){
+		if (user != null) { //Kullanıcı giriş yapmışsa
+			System.out.println("----------------------------------");
+			System.out.println("              YOUTUBE             ");
+			System.out.println("Hoşgeldiniz, " + user.getUsername());
+			System.out.println("----------------------------------");
+		} else { //Kullanıcı giriş yapmamışsa
+			System.out.println("----------------------------------");
+			System.out.println("              YOUTUBE             ");
+			System.out.println("----------------------------------");
+		}
+		
 		displayTrendingVideos();
 		mainMenuOption(menuGui());
 	}
 	
 	private void displayTrendingVideos() {
-		System.out.println("----------------------------------");
-		System.out.println("              YOUTUBE             ");
-		System.out.println("----------------------------------");
+		
 		List<VideoResponseDTO> trendingVideos = videoController.findTrendingVideos(10);
 		if (trendingVideos.isEmpty()) {
 			System.out.println("No trending videos found");
@@ -112,7 +123,7 @@ public class MainGui {
 	
 	
 	public int menuGui(){
-		System.out.println("1. Kayıt Ol veya Giriş Yap");
+		System.out.println("1. Kayıt Ol");
 		System.out.println("2. Giriş Yap");
 		System.out.println("0. Uygulamadan Çıkış");
 		System.out.print("Seçim yap: ");
@@ -124,12 +135,12 @@ public class MainGui {
 		switch (secim){
 			case 1:{
 				userGui.register();
-				mainMenuOption(menuGui());
+				displayTrendingVideos();
 				break;
 			}
 			case 2:{
 				userGui.userModule();
-				mainMenuOption(menuGui());
+				mainGui();
 				break;
 			}
 			case 0:{

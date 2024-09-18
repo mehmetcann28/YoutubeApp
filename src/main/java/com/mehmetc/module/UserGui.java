@@ -16,6 +16,7 @@ public class UserGui {
 	private final Scanner scanner = new Scanner(System.in);
 	private final UserService userService = new UserService();
 	private User user;
+	private final MainGui mainGui = MainGui.getInstance();
 	
 	private UserGui() {
 	}
@@ -29,16 +30,9 @@ public class UserGui {
 	
 	// Kullanıcı modülü (giriş yapma)
 	public void userModule() {
-		userLoginMenuOptions(userLoginMenu());
+	
 	}
 	
-	// Giriş yap veya geri dön menüsü
-	public int userLoginMenu() {
-		System.out.println("1. Giriş Yap");
-		System.out.println("2. Geri Dön");
-		System.out.print("Seçiminiz: ");
-		return scanner.nextInt();
-	}
 	
 	// Giriş yapma işlemleri
 	public void userLoginMenuOptions(int secim) {
@@ -49,7 +43,7 @@ public class UserGui {
 				if (user != null) {
 					System.out.println("Başarıyla giriş yapıldı!");
 				}
-				userLoginMenuOptions(userLoginMenu());
+				mainGui.mainGui();
 			}
 			case 2 -> System.out.println("Ana menüye dönüyorsunuz.");
 			default -> System.out.println("Lütfen geçerli bir seçim yapınız.");
