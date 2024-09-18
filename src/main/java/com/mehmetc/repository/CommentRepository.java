@@ -22,6 +22,10 @@ public class CommentRepository implements ICRUD<Comment> {
 	
 	@Override
 	public Optional<Comment> save(Comment comment) {
+		if (comment.getUserId() == null || comment.getVideoId() == null) {
+			System.out.println("CommentRepository: userId veya videoId boş olamaz.");
+			return Optional.empty();
+		}
 		sql = "INSERT INTO tblcomment(content, videoid, userid)VALUES (?, ?, ?)";
 		try (PreparedStatement statement = connectionProvider.getPreparedStatement(sql)) {
 			

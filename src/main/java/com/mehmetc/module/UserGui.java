@@ -56,7 +56,7 @@ public class UserGui {
 		Optional<User> optUser = userController.findByUsernameAndPassword(username, password);
 		if (optUser.isPresent()) {
 			loggedInUser = optUser.get();
-			System.out.println("Giriş başarılı");
+			System.out.println("Giriş başarılı, kullanıcı ID: " + loggedInUser.getId());
 			return true;
 		} else {
 			System.out.println("Giriş başarısız");

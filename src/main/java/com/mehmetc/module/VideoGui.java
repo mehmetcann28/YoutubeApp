@@ -9,6 +9,7 @@ import com.mehmetc.dto.response.CommentResponseDTO;
 import com.mehmetc.dto.response.UserResponseDTO;
 import com.mehmetc.dto.response.VideoResponseDTO;
 import com.mehmetc.entity.Like;
+import com.mehmetc.entity.User;
 import com.mehmetc.entity.enums.ECategory;
 import com.mehmetc.entity.enums.ELikeStatus;
 
@@ -81,7 +82,7 @@ public class VideoGui {
 		}
 	}*/
 	
-	private void makeComment(Long videoId, Long userId) {
+	/*private void makeComment(Long videoId, Long userId) {
 		if (userId == null) {
 			System.out.println("Yorum yapabilmek için giriş yapmanız gerekmektedir");
 			System.out.println("1. Giriş Yap");
@@ -111,10 +112,10 @@ public class VideoGui {
 		else {
 			System.out.println("Yorum kaydedilirken hata oluştu");
 		}
-	}
+	}*/
 	
 	// Like veya Dislike verme
-	private void giveLikeorDislike(Long videoId,Long userId){
+	/*private void giveLikeorDislike(Long videoId,Long userId){
 		System.out.println("1. Like");
 		System.out.println("2. Dislike");
 		int secim = scanner.nextInt();
@@ -126,7 +127,7 @@ public class VideoGui {
 			likeController.createLike(new LikeSaveRequestDTO(userId,videoId,ELikeStatus.DISLIKE));
 			System.out.println("Dislike verildi");
 		}
-	}
+	}*/
 	
 	public void listByCategory(boolean isUserLoggedIn, UserResponseDTO user) {
 		System.out.println("Kategoriler:");
@@ -173,7 +174,11 @@ public class VideoGui {
 		}
 	}
 	
-	private void displayVideoDetails(VideoResponseDTO video, boolean isUserLoggedIn,UserResponseDTO user) {
+	private boolean displayVideoDetails(VideoResponseDTO video, boolean isUserLoggedIn, UserResponseDTO user) {
+		if (video.getId() == null || user.getId() == null){
+			System.err.println("Yorum yapılamadı: Kullanıcı ID'si veya Video ID'si boş.");
+			return true;
+		}
 		System.out.println("Video Title: " + video.getTitle());
 		System.out.println("Video Description: " + video.getDescription());
 		System.out.println("ViewCount" + video.getViewCount());
@@ -221,6 +226,7 @@ public class VideoGui {
 				}
 			}
 		}
+		return false;
 	}
 	
 }

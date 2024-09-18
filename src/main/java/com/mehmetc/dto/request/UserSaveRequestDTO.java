@@ -3,6 +3,7 @@ package com.mehmetc.dto.request;
 import com.mehmetc.entity.enums.ERole;
 
 public class UserSaveRequestDTO {
+	private Long userId;
 	private String name;
 	private String surname;
 	private String email;
@@ -17,6 +18,24 @@ public class UserSaveRequestDTO {
 		this.username = username;
 		this.password = password;
 		this.role = role;
+	}
+	
+	public UserSaveRequestDTO(Long userId, String name, String surname, String email, String username, String password, ERole role) {
+		this.userId = userId;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+	
+	public Long getUserId() {
+		return userId;
+	}
+	
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	public String getName() {
