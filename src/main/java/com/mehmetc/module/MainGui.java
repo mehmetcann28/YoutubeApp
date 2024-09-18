@@ -15,7 +15,7 @@ public class MainGui {
 	private static MainGui instance;
 	private final Scanner scanner = new Scanner(System.in);
 	private final VideoController videoController = VideoController.getInstance();
-	private final UserGui userGui = UserGui.getInstance();
+	private final UserGui userGui = new UserGui();
 	private final VideoGui videoGui = VideoGui.getInstance();
 	private final UserResponseDTO userResponseDTO = new UserResponseDTO();
 	private boolean isUserLoggedIn = false; // Kullanıcı giriş yaptı mı?
@@ -33,15 +33,19 @@ public class MainGui {
 	}
 	
 	public void mainGui() {
-		displayTrendingVideos();
-		mainMenuOption(menuGui());
+		while (true) {
+			displayTrendingVideos();
+			int secim = menuGui();
+			mainMenuOption(secim);
+		}
+		
 	}
 	
 	// Trend videoları listeleme
 	private void displayTrendingVideos() {
 		System.out.println("----------------------------------");
 		System.out.println("             YOUTUBE              ");
-		if (!isUserLoggedIn) {
+		if (isUserLoggedIn) {
 			System.out.println("Hoşgeldiniz, " + loggedInUsername);
 		}
 		System.out.println("----------------------------------");

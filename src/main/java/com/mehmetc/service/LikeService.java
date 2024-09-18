@@ -19,11 +19,12 @@ public class LikeService {
 	// Yeni bir like kaydetmek için
 	public Optional<Like> saveLike(LikeSaveRequestDTO requestDTO) {
 		try {
-			Like like = new Like(
-					requestDTO.getLikeStatus(),
-					requestDTO.getVideoId(),
-					requestDTO.getUserId()
-			);
+			
+			Like like = new Like();
+			like.setVideoId(requestDTO.getVideoId());
+			like.setUserId(requestDTO.getUserId());
+			like.setLikeStatus(requestDTO.getLikeStatus());
+			
 			
 			Optional<Like> savedLike = likeRepository.save(like);
 			if (savedLike.isPresent()) {

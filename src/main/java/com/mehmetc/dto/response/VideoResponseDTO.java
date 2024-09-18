@@ -61,7 +61,7 @@ public class VideoResponseDTO {
 	}
 	
 	public Integer getLikeCount() {
-		return likeCount;
+		return likeCount++;
 	}
 	
 	public void setLikeCount(Integer likeCount) {
@@ -69,7 +69,7 @@ public class VideoResponseDTO {
 	}
 	
 	public Integer getDislikeCount() {
-		return dislikeCount;
+		return dislikeCount++;
 	}
 	
 	public void setDislikeCount(Integer dislikeCount) {

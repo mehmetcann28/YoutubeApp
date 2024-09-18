@@ -24,6 +24,7 @@ public class CommentRepository implements ICRUD<Comment> {
 	public Optional<Comment> save(Comment comment) {
 		sql = "INSERT INTO tblcomment(content, videoid, userid)VALUES (?, ?, ?)";
 		try (PreparedStatement statement = connectionProvider.getPreparedStatement(sql)) {
+			
 			statement.setString(1, comment.getComment());
 			statement.setLong(2, comment.getVideoId());
 			statement.setLong(3, comment.getUserId());

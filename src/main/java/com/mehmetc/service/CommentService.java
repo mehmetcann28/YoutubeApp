@@ -3,6 +3,8 @@ package com.mehmetc.service;
 import com.mehmetc.dto.request.CommentSaveRequestDTO;
 import com.mehmetc.dto.request.CommentUpdateRequestDTO;
 import com.mehmetc.dto.response.CommentResponseDTO;
+import com.mehmetc.dto.response.UserResponseDTO;
+import com.mehmetc.dto.response.VideoResponseDTO;
 import com.mehmetc.entity.Comment;
 import com.mehmetc.repository.CommentRepository;
 
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 public class CommentService {
 	
 	private final CommentRepository commentRepository;
+	private final UserService userService = new UserService();
+	private final VideoService videoService = new VideoService();
 	
 	public CommentService() {
 		this.commentRepository = new CommentRepository();
@@ -20,8 +24,9 @@ public class CommentService {
 	
 	// Yeni bir yorum kaydetmek için
 	public Optional<CommentResponseDTO> saveComment(CommentSaveRequestDTO requestDTO) {
+		Comment comment;
 		try {
-			Comment comment = new Comment(
+			comment = new Comment(
 					requestDTO.getUserId(),
 					requestDTO.getVideoId(),
 					requestDTO.getContent()

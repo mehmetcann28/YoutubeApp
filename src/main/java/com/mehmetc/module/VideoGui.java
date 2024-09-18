@@ -8,6 +8,7 @@ import com.mehmetc.dto.request.LikeSaveRequestDTO;
 import com.mehmetc.dto.response.CommentResponseDTO;
 import com.mehmetc.dto.response.UserResponseDTO;
 import com.mehmetc.dto.response.VideoResponseDTO;
+import com.mehmetc.entity.Like;
 import com.mehmetc.entity.enums.ECategory;
 import com.mehmetc.entity.enums.ELikeStatus;
 
@@ -216,7 +217,7 @@ public class VideoGui {
 					scanner.nextLine();
 					ELikeStatus likeStatus = likeSelection == 1 ? ELikeStatus.LIKE : ELikeStatus.DISLIKE;
 					LikeSaveRequestDTO requestDTO = new LikeSaveRequestDTO(video.getId(), user.getId(), likeStatus);
-					likeController.createLike(requestDTO);
+					videoController.incrementLikeCount(video.getId());
 				}
 			}
 		}

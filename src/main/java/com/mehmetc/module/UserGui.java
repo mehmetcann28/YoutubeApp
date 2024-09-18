@@ -5,7 +5,6 @@ import com.mehmetc.dto.request.UserSaveRequestDTO;
 import com.mehmetc.dto.response.UserResponseDTO;
 import com.mehmetc.entity.User;
 import com.mehmetc.entity.enums.ERole;
-import com.mehmetc.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,7 @@ public class UserGui {
 	private final Scanner scanner = new Scanner(System.in);
 	private User loggedInUser;
 	
-	private UserGui() {
+	UserGui() {
 	}
 	
 	public static synchronized UserGui getInstance() {
@@ -56,6 +55,7 @@ public class UserGui {
 		String password = scanner.nextLine();
 		Optional<User> optUser = userController.findByUsernameAndPassword(username, password);
 		if (optUser.isPresent()) {
+			loggedInUser = optUser.get();
 			System.out.println("Giriş başarılı");
 			return true;
 		} else {
