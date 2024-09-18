@@ -14,7 +14,7 @@ import java.util.Optional;
 public class CommentRepository implements ICRUD<Comment> {
 	
 	private final ConnectionProvider connectionProvider;
-	private String sql = "";
+	private String sql ;
 	
 	public CommentRepository() {
 		this.connectionProvider = ConnectionProvider.getInstance();
