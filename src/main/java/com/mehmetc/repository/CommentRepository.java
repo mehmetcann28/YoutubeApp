@@ -14,7 +14,7 @@ import java.util.Optional;
 public class CommentRepository implements ICRUD<Comment> {
 	
 	private final ConnectionProvider connectionProvider;
-	private String sql ;
+	private String sql = "";
 	
 	public CommentRepository() {
 		this.connectionProvider = ConnectionProvider.getInstance();
@@ -76,7 +76,7 @@ public class CommentRepository implements ICRUD<Comment> {
 		List<Comment> commentList = new ArrayList<>();
 		try (PreparedStatement statement = connectionProvider.getPreparedStatement(sql);
 		     ResultSet rs = statement.executeQuery()) {
-			while (rs.next()){
+			while (rs.next()) {
 				commentList.add(mapCommentFromResultSet(rs).orElse(null));
 			}
 		}
@@ -90,10 +90,10 @@ public class CommentRepository implements ICRUD<Comment> {
 	@Override
 	public Optional<Comment> findById(Long id) {
 		sql = "SELECT * FROM tblcomment WHERE id=?";
-		try(PreparedStatement statement = connectionProvider.getPreparedStatement(sql)){
-			statement.setLong(1,id);
-			try(ResultSet rs = statement.executeQuery()){
-				if (rs.next()){
+		try (PreparedStatement statement = connectionProvider.getPreparedStatement(sql)) {
+			statement.setLong(1, id);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
 					return mapCommentFromResultSet(rs);
 				}
 			}
@@ -115,7 +115,8 @@ public class CommentRepository implements ICRUD<Comment> {
 					commentList.add(mapCommentFromResultSet(rs).orElse(null));
 				}
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			System.err.println("Repository: Error finding comments by video ID: " + e.getMessage());
 			e.printStackTrace();
 		}
@@ -127,7 +128,8 @@ public class CommentRepository implements ICRUD<Comment> {
 		try (PreparedStatement statement = connectionProvider.getPreparedStatement(sql)) {
 			statement.setLong(1, commentId);
 			statement.executeUpdate();
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			System.err.println("Repository: Error soft deleting comment: " + e.getMessage());
 			e.printStackTrace();
 		}
@@ -143,7 +145,8 @@ public class CommentRepository implements ICRUD<Comment> {
 					commentList.add(mapCommentFromResultSet(rs).orElse(null));
 				}
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			System.err.println("Repository: Error finding comments by user ID: " + e.getMessage());
 			e.printStackTrace();
 		}
@@ -156,7 +159,8 @@ public class CommentRepository implements ICRUD<Comment> {
 			statement.setByte(1, newState);
 			statement.setLong(2, commentId);
 			statement.executeUpdate();
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			System.err.println("Repository: Error updating comment state: " + e.getMessage());
 			e.printStackTrace();
 		}
