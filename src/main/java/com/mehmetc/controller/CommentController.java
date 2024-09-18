@@ -3,6 +3,8 @@ package com.mehmetc.controller;
 import com.mehmetc.dto.request.CommentSaveRequestDTO;
 import com.mehmetc.dto.request.CommentUpdateRequestDTO;
 import com.mehmetc.dto.response.CommentResponseDTO;
+import com.mehmetc.entity.User;
+import com.mehmetc.entity.Video;
 import com.mehmetc.service.CommentService;
 
 import java.util.List;
@@ -54,4 +56,5 @@ public class CommentController {
 	public void updateCommentState(Long commentId, Byte newState) {
 		commentService.updateCommentState(commentId, newState);
 	}
+	
 }

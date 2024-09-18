@@ -2,10 +2,12 @@ package com.mehmetc.module;
 
 import com.mehmetc.controller.UserController;
 import com.mehmetc.dto.request.UserSaveRequestDTO;
+import com.mehmetc.dto.response.UserResponseDTO;
 import com.mehmetc.entity.User;
 import com.mehmetc.entity.enums.ERole;
 import com.mehmetc.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -14,9 +16,7 @@ public class UserGui {
 	private static UserGui instance;
 	private final UserController userController = UserController.getInstance();
 	private final Scanner scanner = new Scanner(System.in);
-	private final UserService userService = new UserService();
-	private User user;
-	private final MainGui mainGui = MainGui.getInstance();
+	private User loggedInUser;
 	
 	private UserGui() {
 	}
@@ -26,28 +26,6 @@ public class UserGui {
 			instance = new UserGui();
 		}
 		return instance;
-	}
-	
-	// Kullanıcı modülü (giriş yapma)
-	public void userModule() {
-	
-	}
-	
-	
-	// Giriş yapma işlemleri
-	public void userLoginMenuOptions(int secim) {
-		scanner.nextLine(); // Boşluğu temizlemek için
-		switch (secim) {
-			case 1 -> {
-				user = doLogin();
-				if (user != null) {
-					System.out.println("Başarıyla giriş yapıldı!");
-				}
-				mainGui.mainGui();
-			}
-			case 2 -> System.out.println("Ana menüye dönüyorsunuz.");
-			default -> System.out.println("Lütfen geçerli bir seçim yapınız.");
-		}
 	}
 	
 	// Kullanıcı kaydı
@@ -71,12 +49,45 @@ public class UserGui {
 	}
 	
 	// Kullanıcı girişi işlemi
-	public User doLogin() {
+	public boolean userModule() {
 		System.out.print("Kullanıcı adınızı giriniz: ");
 		String username = scanner.nextLine();
 		System.out.print("Şifrenizi giriniz: ");
 		String password = scanner.nextLine();
 		Optional<User> optUser = userController.findByUsernameAndPassword(username, password);
-		return optUser.orElse(null);
+		if (optUser.isPresent()) {
+			System.out.println("Giriş başarılı");
+			return true;
+		} else {
+			System.out.println("Giriş başarısız");
+			return false;
+		}
+	}
+	
+	// Kullanıcı profili görüntüleme
+	public void showUserProfile() {
+		if (loggedInUser != null) {
+			System.out.println("Profiliniz:");
+			System.out.println("Ad: " + loggedInUser.getName());
+		} else {
+			System.out.println("Giriş yapmadınız");
+		}
+	}
+	
+	// Kayıtlı kullanıcıları listeleme
+	public void listRegisteredUsers() {
+		List<UserResponseDTO> allUsers = userController.getAllUsers();
+		for (UserResponseDTO user : allUsers) {
+			System.out.println("Adı: " + user.getName());
+		}
+	}
+	
+	public String getLoggedInUserName() {
+		return loggedInUser != null ? loggedInUser.getName() : null; //Ternary
+	}
+	
+	// Giriş yapan kullanıcının İD sini alma
+	public Long getLoggedInUserId() {
+		return loggedInUser != null ? loggedInUser.getId() : null;
 	}
 }

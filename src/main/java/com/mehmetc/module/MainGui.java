@@ -3,6 +3,7 @@ package com.mehmetc.module;
 import com.mehmetc.controller.CommentController;
 import com.mehmetc.controller.VideoController;
 import com.mehmetc.dto.response.CommentResponseDTO;
+import com.mehmetc.dto.response.UserResponseDTO;
 import com.mehmetc.dto.response.VideoResponseDTO;
 import com.mehmetc.entity.User;
 
@@ -14,9 +15,11 @@ public class MainGui {
 	private static MainGui instance;
 	private final Scanner scanner = new Scanner(System.in);
 	private final VideoController videoController = VideoController.getInstance();
-	private final CommentController commentController = CommentController.getInstance();
 	private final UserGui userGui = UserGui.getInstance();
-	private User user;
+	private final VideoGui videoGui = VideoGui.getInstance();
+	private final UserResponseDTO userResponseDTO = new UserResponseDTO();
+	private boolean isUserLoggedIn = false; // Kullanıcı giriş yaptı mı?
+	private String loggedInUsername = null;
 	
 	
 	public MainGui() {
@@ -29,127 +32,94 @@ public class MainGui {
 		return instance;
 	}
 	
-	public void mainGui(){
-		if (user != null) { //Kullanıcı giriş yapmışsa
-			System.out.println("----------------------------------");
-			System.out.println("              YOUTUBE             ");
-			System.out.println("Hoşgeldiniz, " + user.getUsername());
-			System.out.println("----------------------------------");
-		} else { //Kullanıcı giriş yapmamışsa
-			System.out.println("----------------------------------");
-			System.out.println("              YOUTUBE             ");
-			System.out.println("----------------------------------");
-		}
-		
+	public void mainGui() {
 		displayTrendingVideos();
 		mainMenuOption(menuGui());
 	}
 	
+	// Trend videoları listeleme
 	private void displayTrendingVideos() {
-		
+		System.out.println("----------------------------------");
+		System.out.println("             YOUTUBE              ");
+		if (!isUserLoggedIn) {
+			System.out.println("Hoşgeldiniz, " + loggedInUsername);
+		}
+		System.out.println("----------------------------------");
 		List<VideoResponseDTO> trendingVideos = videoController.findTrendingVideos(10);
 		if (trendingVideos.isEmpty()) {
 			System.out.println("No trending videos found");
 		}
 		else {
-			System.out.println("Trending Videos:");
+			System.out.println("Tüm Videolar");
 			for (int i = 0; i < trendingVideos.size(); i++) {
 				VideoResponseDTO video = trendingVideos.get(i);
-				System.out.println(i+1+". "+video.getTitle());
+				System.out.println(i + 1 + ". " + video.getTitle());
 			}
 		}
-		System.out.println("----------------------------");
+		System.out.println("----------------------------------");
 	}
 	
-	/*private void selectAndShowVideo(){
-		if (trendingVideos == null || trendingVideos.isEmpty()) {
-			System.out.println("Şu anda görüntülenecek video yok");
-			return;
-		}
-		
-		System.out.print("Bir video seçiniz: ");
-		int videoSecim = scanner.nextInt();
-		scanner.nextLine();
-		
-		if (videoSecim < 1 || videoSecim > trendingVideos.size()) {
-			System.out.println("Geçersiz seçim");
-			return;
-		}
-		
-		VideoResponseDTO video = trendingVideos.get(videoSecim-1);
-		showVideoDetails(video);
-	}*/
-	
-	/*private void showVideoDetails(VideoResponseDTO video) {
-		System.out.println("Video Title: "+video.getTitle());
-		System.out.println("Video Description: "+video.getDescription());
-		System.out.println("ViewCount"+video.getViewCount());
-		System.out.println("LikeCount"+video.getLikeCount());
-		System.out.println("DislikeCount"+video.getDislikeCount());
-		
-		
-		List<CommentResponseDTO> commentsByVideoId = commentController.findCommentsByVideoId(video.getId());
-		if (commentsByVideoId.isEmpty()) {
-			System.out.println("No comments found");
-		}
-		else {
-			System.out.println("Comments:");
-			for (CommentResponseDTO comment : commentsByVideoId) {
-				System.out.println(comment.getContent());
-			}
-		}
-		System.out.println("----------------------------");
-	}*/
-	
-	/*private void displayTrendingVideos() {
-		System.out.println("----------------------------------");
-		System.out.println("              YOUTUBE             ");
-		System.out.println("----------------------------------");
-		List<VideoResponseDTO> trendingVideos = videoController.findTrendingVideos(10);
-		if (trendingVideos.isEmpty()) {
-			System.out.println("No trending videos found");
-		}
-		else {
-			System.out.println("Trending Videos:");
-			for (VideoResponseDTO video : trendingVideos) {
-				System.out.println(video);
-			}
-		}
-		System.out.println("----------------------------");
-	}*/
-	
-	
-	
-	
-	
-	public int menuGui(){
+	public int menuGui() {
 		System.out.println("1. Kayıt Ol");
 		System.out.println("2. Giriş Yap");
-		System.out.println("0. Uygulamadan Çıkış");
+		System.out.println("3. Kayıtlı Kullanıcıları Listele");
+		System.out.println("4. Trend Videoları Listele");
+		System.out.println("5. Kategoriye Göre Listele");
+		System.out.println("6. Video Ara");
+		if (isUserLoggedIn) {
+			System.out.println("7. Profilimi Görüntüle");
+		}
+		System.out.println("0. Uygulamadan çıkış");
 		System.out.print("Seçim yap: ");
 		return scanner.nextInt();
 	}
 	
-	public void mainMenuOption(int secim){
+	public void mainMenuOption(int secim) {
 		scanner.nextLine();
-		switch (secim){
-			case 1:{
+		switch (secim) {
+			case 1: {
 				userGui.register();
+				break;
+			}
+			case 2: {
+				isUserLoggedIn = userGui.userModule();
+				if (isUserLoggedIn) {
+					loggedInUsername = userGui.getLoggedInUserName();
+				}
+				break;
+			}
+			case 3: {
+				userGui.listRegisteredUsers();
+				break;
+			}
+			case 4: {
 				displayTrendingVideos();
+				videoGui.trendVideos(isUserLoggedIn);
 				break;
 			}
-			case 2:{
-				userGui.userModule();
-				mainGui();
+			case 5: {
+				videoGui.listByCategory(isUserLoggedIn,userResponseDTO);
 				break;
 			}
-			case 0:{
-				System.out.println("Çıkış yapılıyor...");
+			case 6: {
+				break;
+			}
+			case 7: {
+				if (isUserLoggedIn) {
+					userGui.showUserProfile();
+				}
+				else {
+					System.out.println("Bu işlemi yapmak için giriş yapmalısınız");
+				}
+				break;
+			}
+			case 0: {
+				System.out.println("Çıkış yapılıyor....");
 				System.exit(0);
 				break;
 			}
-			default:{
-				System.out.println("Lütfen geçerli bir seçim yapınız...");
+			default: {
+				System.out.println("Lütfen geçerli bir seçim yapınız....");
 				mainMenuOption(menuGui());
 			}
 		}

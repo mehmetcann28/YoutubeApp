@@ -3,6 +3,7 @@ package com.mehmetc.controller;
 import com.mehmetc.dto.request.VideoSaveRequestDTO;
 import com.mehmetc.dto.request.VideoUpdateRequestDTO;
 import com.mehmetc.dto.response.VideoResponseDTO;
+
 import com.mehmetc.entity.enums.ECategory;
 import com.mehmetc.service.VideoService;
 
@@ -13,9 +14,11 @@ public class VideoController {
 	
 	private static VideoController instance;
 	private final VideoService videoService;
+	private final UserController userController;
 	
 	public VideoController() {
 		this.videoService = new VideoService();
+		this.userController = new UserController();
 	}
 	
 	public static synchronized VideoController getInstance(){
