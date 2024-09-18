@@ -1,11 +1,4 @@
-package com.mehmetc.gui;
-
-import com.mehmetc.controller.UserController;
-import com.mehmetc.dto.request.UserSaveRequestDTO;
-import com.mehmetc.dto.request.UserUpdateRequestDTO;
-import com.mehmetc.entity.User;
-import com.mehmetc.entity.enums.ERole;
-import com.mehmetc.repository.UserRepository;
+package com.mehmetc.testgui;
 
 public class UserGui {
 	public static void main(String[] args) {

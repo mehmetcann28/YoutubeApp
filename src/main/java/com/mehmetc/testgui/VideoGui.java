@@ -1,4 +1,4 @@
-package com.mehmetc.gui;
+package com.mehmetc.testgui;
 
 
 import com.mehmetc.entity.Video;

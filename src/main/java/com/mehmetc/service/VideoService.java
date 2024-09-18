@@ -3,6 +3,7 @@ package com.mehmetc.service;
 import com.mehmetc.dto.request.VideoSaveRequestDTO;
 import com.mehmetc.dto.request.VideoUpdateRequestDTO;
 import com.mehmetc.dto.response.VideoResponseDTO;
+import com.mehmetc.entity.User;
 import com.mehmetc.entity.Video;
 import com.mehmetc.entity.enums.ECategory;
 import com.mehmetc.repository.VideoRepository;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class VideoService {
 	
 	private final VideoRepository videoRepository;
+	private UserService userService;
 	
 	public VideoService() {
 		this.videoRepository = new VideoRepository();
+		this.userService = new UserService();
 	}
 	
 	// Yeni bir video kaydetmek için

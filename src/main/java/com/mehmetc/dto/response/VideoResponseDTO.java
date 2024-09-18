@@ -78,6 +78,6 @@ public class VideoResponseDTO {
 	
 	@Override
 	public String toString() {
-		return "VideoResponseDTO{" + "id=" + getId() + ", uploaderId=" + getUploaderId() + ", title='" + getTitle() + '\'' + ", description='" + getDescription() + '\'' + ", category=" + getCategory() + ", viewCount=" + getViewCount() + ", likeCount=" + getLikeCount() + ", dislikeCount=" + getDislikeCount() + '}';
+		return "VideoResponseDTO{" + "title='" + getTitle() + '\'' + ", description='" + getDescription() + '\'' + ", category=" + getCategory() + ", viewCount=" + getViewCount() + ", likeCount=" + getLikeCount() + ", dislikeCount=" + getDislikeCount() + '}';
 	}
 }
